@@ -342,7 +342,8 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 
-# Backup folder for Package Reference Convert tool in Visual Studio 2017
-MigrationBackup/
-/mat-o-mat-order/BeverageEditForm.cs
-/mat-o-mat-order/BeverageEditForm.Designer.cs
+#DiscordToken
+DiscordToken
+
+#discordCompile for arm
+discordbot-linux-arm/
