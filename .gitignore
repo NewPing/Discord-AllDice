@@ -347,3 +347,6 @@ DiscordToken
 
 #discordCompile for arm
 discordbot-linux-arm/
+
+#DiscordBotOwnerID
+DiscordBotOwnerID
