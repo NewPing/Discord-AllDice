@@ -27,11 +27,19 @@ namespace AllDice //https://discord.foxbot.me/stable/
                 .AddSingleton(_commands)
                 .BuildServiceProvider();
 
-            #if DEBUG
-                string token = File.ReadAllText(Path.GetFullPath(@"..\..\..\") + "DiscordToken");
-            #else
-                string token = File.ReadAllText("DiscordToken");
-            #endif
+            string token = "";
+            try
+            {
+                #if DEBUG
+                    token = File.ReadAllText(Path.GetFullPath(@"..\..\..\") + "DiscordToken");
+                #else
+                    token = File.ReadAllText("DiscordToken");
+                #endif
+            } catch (Exception ex)
+            {
+                Console.WriteLine("Fatal Erro: Missing File: DiscordToken\n\n" + ex.ToString());
+                return;
+            }
 
             _client.Log += _client_Log;
 
