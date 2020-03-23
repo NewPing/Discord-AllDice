@@ -2,6 +2,7 @@
 using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -42,7 +43,7 @@ namespace AllDice.Classes
                 "sww(zahl)(+/-zahl)",
                 "Savage Worlds Wildcard-Eigenschaftsprobe",
                 "!sww8+1",
-                sww_Async)); //[zahl]ssw[zahl]+/-[zahl]
+                sww_Async)); //sww[zahl]+/-[zahl]
 
             commands_def.Add(new CommandDef( //Savage Worlds Wildcard
                 @"^!sws[0-9]+((:?((:?\+)?|(:?\-)?)[0-9]+)?)$",
@@ -50,7 +51,23 @@ namespace AllDice.Classes
                 "sws(zahl)(+/-zahl)",
                 "Savage Worlds Statist Probe",
                 "!sws8+1",
-                sws_Async)); //[zahl]ssw[zahl]+/-[zahl]
+                sws_Async)); //sws[zahl]+/-[zahl]
+
+            commands_def.Add(new CommandDef( //Savage Worlds Wildcard
+                @"^!swd[0-9]+,[0-9]+(:?(,)?)((:?((:?\+)?|(:?\-)?)[0-9]+)?)$",
+                "Savage Worlds Damage",
+                "swd(zahl),(zahl),(+/-zahl)",
+                "Savage Worlds Damage Probe",
+                "!swd5,4,+1",
+                swd_Async)); //swd[zahl],[zahl],+/-[zahl]
+
+            commands_def.Add(new CommandDef( //Savage Worlds Wildcard
+                @"^!swh$",
+                "Savage Worlds Damage-Zone",
+                "swd)",
+                "Savage Worlds Damage-Zone Probe",
+                "!swh",
+                swh_Async)); //swh
 
             commands_def.Add(new CommandDef( //Channel aktivieren
                 @"^!enableChannel$",
@@ -100,8 +117,11 @@ namespace AllDice.Classes
             
             if (commandFound == false)
             {
-                await ReplyManager.send_Async(message, "Syntax Error", "Kein Befehl mit diesem Syntax gefunden...");
-                await help_Async(message);
+                if (Helper.isChannelEnabled(message.Channel.Id.ToString()))
+                {
+                    await ReplyManager.send_Async(message, "Syntax Error", "Kein Befehl mit diesem Syntax gefunden...");
+                    await help_Async(message);
+                }
             }
         }
         #endregion
@@ -322,8 +342,8 @@ namespace AllDice.Classes
                         reply = reply.Replace("$INPUTNUMBER$", inputNumbers[0].ToString());
                         reply = reply.Replace("$RANDNUMBERS0$", explodingDice0.Item2);
                         reply = reply.Replace("$RANDNUMBERS1$", explodingDice1.Item2);
-                        reply = reply.Replace("$SUM0$", explodingDice0.Item2);
-                        reply = reply.Replace("$SUM1$", explodingDice1.Item2);
+                        reply = reply.Replace("$SUM0$", explodingDice0.Item1.ToString());
+                        reply = reply.Replace("$SUM1$", explodingDice1.Item1.ToString());
                         reply = reply.Replace("$ADD$", inputNumbers[1].ToString());
 
                         reply = reply.Replace("$RESULT0$", (explodingDice0.Item1 + inputNumbers[1]).ToString());
@@ -397,7 +417,7 @@ namespace AllDice.Classes
                         reply += blancOutput;
                         reply = reply.Replace("$INPUTNUMBER$", inputNumbers[0].ToString());
                         reply = reply.Replace("$RANDNUMBERS0$", explodingDice0.Item2);
-                        reply = reply.Replace("$SUM0$", explodingDice0.Item2);
+                        reply = reply.Replace("$SUM0$", explodingDice0.Item1.ToString());
                         reply = reply.Replace("$ADD$", inputNumbers[1].ToString());
 
                         reply = reply.Replace("$RESULT0$", (explodingDice0.Item1 + inputNumbers[1]).ToString());
@@ -413,6 +433,118 @@ namespace AllDice.Classes
 
                         await ReplyManager.send_Async(message, reply);
                     }
+                }
+            }
+            catch (Exception)
+            {
+                await ReplyManager.send_Async(message, "Exception in sww_Async... Versuche es bitte erneut mit anderen Inputs...");
+            }
+        }
+
+        private async Task swd_Async(SocketUserMessage message)
+        {
+            try
+            {
+                if (Helper.isChannelEnabled(message.Channel.Id.ToString()))
+                {
+                    string blancOutput = Helper.blanc_swd_Output;
+                    int[] inputNumbers = null;
+                    Tuple<int, string> explodingDice0 = null;
+                    Tuple<int, string> explodingDice1 = null;
+                    string reply = "";
+
+                    MatchCollection values = new Regex(@"\d+").Matches(message.Content);
+                    inputNumbers = new int[3];
+                    inputNumbers[2] = 0;
+                    for (int i = 0; i < values.Count; i++)
+                    {
+                        inputNumbers[i] = Int32.Parse(values[i].ToString());
+                    }
+
+                    if (inputNumbers[0] < 2 || inputNumbers[1] < 2)
+                    {
+                        await ReplyManager.send_Async(message, "Syntax Error", "❗Syntax Error : Eingabe muss größer als 1 sein!");
+                        return;
+                    }
+                    else
+                    {
+                        explodingDice0 = Helper.getExplodingDice(inputNumbers[0]);
+                        explodingDice1 = Helper.getExplodingDice(inputNumbers[1]);
+                        //Output zusammenbauen
+                        if (message.Content.Count(x => x == ',') == 2)
+                        {
+                            if (message.Content.Contains("-")) //nachricht enthält minus
+                            {
+                                inputNumbers[2] = -inputNumbers[2];  //letzte zahl umkehren
+                                blancOutput = blancOutput.Replace("+$ADD$", "$ADD$");
+                            }
+                        }
+                        else
+                        {
+                            blancOutput = blancOutput.Replace("+$ADD$ ", "");
+                        }
+                        if (!explodingDice0.Item2.Contains("+")) //Addition wird nicht benötigt
+                        {
+                            blancOutput = blancOutput.Replace("Rechnung: $RANDNUMBERS0$\nSumme", "Ergebnis");
+                        }
+                        if (!explodingDice1.Item2.Contains("+")) //Addition wird nicht benötigt
+                        {
+                            blancOutput = blancOutput.Replace("Rechnung: $RANDNUMBERS1$\nSumme", "Ergebnis");
+                        }
+
+                        reply += blancOutput;
+                        reply = reply.Replace("$INPUTNUMBER0$", inputNumbers[0].ToString());
+                        reply = reply.Replace("$INPUTNUMBER1$", inputNumbers[1].ToString());
+                        reply = reply.Replace("$RANDNUMBERS0$", explodingDice0.Item2);
+                        reply = reply.Replace("$RANDNUMBERS1$", explodingDice1.Item2);
+                        reply = reply.Replace("$SUM0$", explodingDice0.Item1.ToString());
+                        reply = reply.Replace("$SUM1$", explodingDice1.Item1.ToString());
+                        reply = reply.Replace("$ADD$", inputNumbers[2].ToString());
+
+                        reply = reply.Replace("$RESULT$", (explodingDice0.Item1 + explodingDice1.Item1 + inputNumbers[2]).ToString());
+
+                        await ReplyManager.send_Async(message, reply);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                await ReplyManager.send_Async(message, "Exception in sww_Async... Versuche es bitte erneut mit anderen Inputs...");
+            }
+        }
+
+        private async Task swh_Async(SocketUserMessage message)
+        {
+            try
+            {
+                if (Helper.isChannelEnabled(message.Channel.Id.ToString()))
+                {
+                    string blancOutput = Helper.blanc_swh_Output;
+                    int[] randomNumbers = new int[3];
+                    string reply = "";
+
+                    randomNumbers[0] = Helper.getRandomNumber(6);
+                    randomNumbers[1] = Helper.getRandomNumber(6);
+                    randomNumbers[2] = Helper.getRandomNumber(6);
+
+                    string[] zones = Helper.getSWHZoneOutput(randomNumbers[0] + randomNumbers[1], randomNumbers[2]);
+                    if (String.IsNullOrWhiteSpace(zones[1]))
+                    {
+                        blancOutput = blancOutput.Replace("\nZusatzwurf W6: $RANDOMNUMBER2$ - **$ZONE1$**", "");
+                    }
+
+                    //Output zusammenbauen
+                    reply += blancOutput;
+                    reply = reply.Replace("$RANDNUMBER0$", randomNumbers[0].ToString());
+                    reply = reply.Replace("$RANDNUMBER1$", randomNumbers[1].ToString());
+                    reply = reply.Replace("$RANDNUMBER2$", randomNumbers[2].ToString());
+                    reply = reply.Replace("$SUM$", (randomNumbers[0] + randomNumbers[1]).ToString());
+
+                    reply = reply.Replace("$ZONE0$", zones[0]);
+                    reply = reply.Replace("$ZONE1$", zones[1]);
+
+                    await ReplyManager.send_Async(message, reply);
+
                 }
             }
             catch (Exception)

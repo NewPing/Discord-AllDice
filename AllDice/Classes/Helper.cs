@@ -23,6 +23,16 @@ namespace AllDice.Classes
             "**Wildcardwurf: W6**\nRechnung: $RANDNUMBERS1$\nSumme: $SUM1$+$ADD$ = $RESULT1$\n$OUTPUT1$";
         public static string blanc_sws_Output =
             "**Probewurf W$INPUTNUMBER$**\nRechnung: $RANDNUMBERS0$\nSumme: $SUM0$+$ADD$ = $RESULT0$\n$OUTPUT0$";
+        public static string blanc_swd_Output =
+            "**Schadenswurf W$INPUTNUMBER0$**\nRechnung: $RANDNUMBERS0$\nSumme: $SUM0$\n\n" +
+            "**Schadenswurf W$INPUTNUMBER1$**\nRechnung: $RANDNUMBERS1$\nSumme: $SUM1$\n\n" +
+            "Ergebnis: $SUM0$ + $SUM1$ +$ADD$ = $RESULT$";
+        public static string blanc_swh_Output =
+            "Trefferzonenwurf W6: $RANDNUMBER0$\n" +
+            "Trefferzonenwurf W6: $RANDNUMBER1$\n" +
+            "**Ergebnis: $SUM$**\n\n" +
+            "Trefferzone: **$ZONE0$**\n" +
+            "Zusatzwurf W6: $RANDNUMBER2$ - **$ZONE1$**";
 
         #endregion
 
@@ -63,6 +73,67 @@ namespace AllDice.Classes
             {
                 return "Erfolg - Steigerung um **" + (Convert.ToInt32(number / swPass) -1) + "**!";
             }
+        }
+
+        public static string[] getSWHZoneOutput(int number, int number2)
+        {
+            string[] ret = new string[2];
+            ret[0] = "";
+            ret[1] = "";
+            if (number == 2)
+            {
+                ret[0] = "Geschlechtsteile";
+            } else if (number < 5)
+            {
+                if (getRandomNumber(2) == 1)
+                {
+                    ret[0] = "Linker Arm";
+                } else
+                {
+                    ret[0] = "Rechter Arm";
+                }
+            } else if (number < 10)
+            {
+                ret[0] = "Eingeweide";
+                if (number2 < 3)
+                {
+                    ret[1] = "Gebrochen";
+                }
+                else if (number2 < 5)
+                {
+                    ret[1] = "Zerschmettert";
+                }
+                else
+                {
+                    ret[1] = "Ruiniert";
+                }
+            } else if (number == 10)
+            {
+                if (getRandomNumber(2) == 1)
+                {
+                    ret[0] = "Linkes Bein";
+                }
+                else
+                {
+                    ret[0] = "Rechtes Bein";
+                }
+            } else
+            {
+                ret[0] = "Kopf";
+                if (number2 < 3)
+                {
+                    ret[1] = "Scheußliche Narbe";
+                }
+                else if (number2 < 5)
+                {
+                    ret[1] = "Geblendet";
+                }
+                else
+                {
+                    ret[1] = "Gehirnerschütterung";
+                }
+            }
+            return ret;
         }
 
         public static Color getUserColor(SocketUser author)
