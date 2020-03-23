@@ -16,7 +16,8 @@ namespace AllDice.Classes
                 message,
                 "würfelte einen " + inputMessage,
                 replyText,
-                color
+                color,
+                true
                 );
         }
 
@@ -28,23 +29,48 @@ namespace AllDice.Classes
                 message,
                 caption,
                 replyText,
-                color
+                color,
+                true
                 );
         }
 
-        private static async Task sendSplitMessage(SocketMessage message, string caption, string replyText, Color color)
+        public static async Task send_Async(SocketMessage message, string caption, string replyText, bool showAuthor)
+        {
+            Color color = Helper.getUserColor(message.Author);
+
+            await sendSplitMessage(
+                message,
+                caption,
+                replyText,
+                color,
+                showAuthor
+                );
+        }
+
+        private static async Task sendSplitMessage(SocketMessage message, string caption, string replyText, Color color, bool showAuthor)
         {
             if (!String.IsNullOrWhiteSpace(replyText))
             {
                 var splitString = Helper.splitIntoChunks(replyText, Helper.maxReplyLength);
 
                 //send first block
-                Embed embed = new EmbedBuilder()
+                Embed embed = null;
+                if (showAuthor)
+                {
+                    embed = new EmbedBuilder()
                     .WithAuthor(message.Author)
                     .WithColor(color)
                     .WithTitle(caption)
                     .WithDescription(splitString[0])
                     .Build();
+                } else
+                {
+                    embed = new EmbedBuilder()
+                    .WithColor(color)
+                    .WithTitle(caption)
+                    .WithDescription(splitString[0])
+                    .Build();
+                }
 
                 await message.Channel.SendMessageAsync("", false, embed);
 
@@ -69,8 +95,6 @@ namespace AllDice.Classes
 
                 await message.Channel.SendMessageAsync("", false, embed);
             }
-
-            
         }
     }
 }
