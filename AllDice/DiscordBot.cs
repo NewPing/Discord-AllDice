@@ -19,8 +19,23 @@ namespace AllDice //https://discord.foxbot.me/stable/
         #region setup
         public async Task RunBotAsync()
         {
+            string ownerID = "";
+            try
+            {
+                #if DEBUG
+                    ownerID = File.ReadAllText(Path.GetFullPath(@"..\..\..\") + "DiscordBotOwnerID");
+                #else
+                    ownerID = File.ReadAllText("DiscordBotOwnerID");
+                #endif
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fatal Erro: Missing File: DiscordBotOwnerID\n\n" + ex.ToString());
+                return;
+            }
+
             _client = new DiscordSocketClient();
-            _commands = new Commands();
+            _commands = new Commands(ownerID);
 
             _services = new ServiceCollection()
                 .AddSingleton(_client)
@@ -57,7 +72,7 @@ namespace AllDice //https://discord.foxbot.me/stable/
             Console.WriteLine(arg);
             return Task.CompletedTask;
         }
-        #endregion
+#endregion
 
         #region evenhandling
 
@@ -69,7 +84,6 @@ namespace AllDice //https://discord.foxbot.me/stable/
         private async Task HandleCommandAsync(SocketMessage arg)
         {
             var message = arg as SocketUserMessage;
-            var context = new SocketCommandContext(_client, message);
             if (message.Author.IsBot)
             {
                 return;
@@ -82,6 +96,6 @@ namespace AllDice //https://discord.foxbot.me/stable/
             }
         }
 
-        #endregion
+#endregion
     }
 }

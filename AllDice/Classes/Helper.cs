@@ -1,26 +1,22 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AllDice.Classes
 {
     public static class Helper
     {
+        public static int maxReplyLength = 1000;
+        public static string ownerID;
         public static Random random = new Random();
-        public static string blanc_w_Output = "Ergebnis: $INPUTMESSAGE$ ($RANDNUMBER$) Summe: ( $SUM$+$ADD$ ) = $RESULT$";
+        public static Dictionary<string, string> disabledChannels = new Dictionary<string, string>();
+        public static string blanc_w_Output = "Rechnung: $RANDNUMBER$\nSumme: $SUM$+$ADD$\nErgebnis = $RESULT$";
 
-        #region methods
         public static int getRandomNumber(int endValue)
         {
             int result = random.Next(1, endValue + 1);
-
-            return result;
-        }
-
-        public static int getRandomNumber(int startValue, int endValue)
-        {
-            int result = random.Next(startValue, endValue + 1);
 
             return result;
         }
@@ -35,39 +31,25 @@ namespace AllDice.Classes
                 return Color.Green;
             }
         }
-        #endregion
-    }
 
-    public class ReplyManager
-    {
-        public SocketMessage message;
-        public string inputMessage;
-        public SocketUser author;
-        public Color color;
-        
-
-        public ReplyManager(SocketMessage _message)
+        public static List<string> splitIntoChunks(string str, int maxChunkSize)
         {
-            message = _message;
-            author = message.Author;
-            color = Helper.getUserColor(author);
-            inputMessage = message.Content.ToString().Split("!")[1];
+            List<string> chunks = new List<string>();
+            for (int i = 0; i < str.Length; i += maxChunkSize)
+            {
+                chunks.Add(str.Substring(i, Math.Min(maxChunkSize, str.Length - i)));
+            }
+            return chunks;
         }
 
-        public async Task<Error> send_Async(string replyText)
+        public static bool isChannelEnabled(string channelID)
         {
-            Error retObj = new Error();
-            Embed embed = new EmbedBuilder()
-                .WithAuthor(message.Author)
-                .WithColor(color)
-                .WithTitle("würfelte einen " + inputMessage)
-                .WithDescription(replyText)
-                .Build();
+            return !Helper.disabledChannels.ContainsKey(channelID);
+        }
 
-            await message.Channel.SendMessageAsync("", false, embed);
-
-            retObj.success = true;
-            return retObj;
+        public static bool isUserPermitted(string userID)
+        {
+            return ownerID == userID;
         }
     }
 }
