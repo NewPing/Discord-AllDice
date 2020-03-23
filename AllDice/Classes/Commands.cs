@@ -309,11 +309,11 @@ namespace AllDice.Classes
                             blancOutput = blancOutput.Replace("+$ADD$ = $RESULT0$", "");
                             blancOutput = blancOutput.Replace("+$ADD$ = $RESULT1$", "");
                         }
-                        if (!explodingDice0.Item2.Contains("+")) //Addition nicht wird benötigt
+                        if (!explodingDice0.Item2.Contains("+")) //Addition wird nicht benötigt
                         {
                             blancOutput = blancOutput.Replace("Rechnung: $RANDNUMBERS0$\nSumme", "Ergebnis");
                         }
-                        if (!explodingDice1.Item2.Contains("+")) //Addition nicht wird benötigt
+                        if (!explodingDice1.Item2.Contains("+")) //Addition wird nicht benötigt
                         {
                             blancOutput = blancOutput.Replace("Rechnung: $RANDNUMBERS1$\nSumme", "Ergebnis");
                         }
@@ -388,6 +388,10 @@ namespace AllDice.Classes
                         else
                         {
                             blancOutput = blancOutput.Replace("+$ADD$ = $RESULT0$", "");
+                        }
+                        if (!explodingDice0.Item2.Contains("+")) //Addition wird nicht benötigt
+                        {
+                            blancOutput = blancOutput.Replace("Rechnung: $RANDNUMBERS0$\nSumme", "Ergebnis");
                         }
 
                         reply += blancOutput;
