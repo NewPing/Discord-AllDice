@@ -584,7 +584,7 @@ namespace AllDice.Classes
                             if (inputNumber == command.index)
                             {
                                 tmpCommandName = command.name;
-                                reply += "**" + command.syntax + "**\n";
+                                reply += "**Syntax: " + command.syntax + "**\n";
                                 reply += command.description + "\n\n";
                                 reply += "Beispiel: " + command.example;
                                 commandFound = true;
