@@ -22,7 +22,7 @@ namespace AllDice.Classes
         private void initializeCommands()
         {
             commands_def.Add(new CommandDef( //Hilfeseite
-                @"^!help(:?( [0-9]+)?)$",
+                @"^!help(:?((:?( )?)[0-9]+)?)$",
                 "Help",
                 "help (index)",
                 "Gibt die Hilfeseite aus",
