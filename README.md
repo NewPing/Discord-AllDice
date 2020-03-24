@@ -1,5 +1,5 @@
 # Discord-AllDice
-Ermöglicht das Würfeln im Discord-Chat in Form von Textbefehlen
+Ist ein Discord-Bot der das Würfeln im Chat durch eingabe von Textbefehlen ermöglicht
 
 # Mögliche Befehle
 | Name | Aufruf-Syntax | Beschreibung |
