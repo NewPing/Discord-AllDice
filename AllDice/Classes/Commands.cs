@@ -45,7 +45,7 @@ namespace AllDice.Classes
                 "!sww8+1",
                 sww_Async)); //sww[zahl]+/-[zahl]
 
-            commands_def.Add(new CommandDef( //Savage Worlds Wildcard
+            commands_def.Add(new CommandDef( //Savage Worlds Statist
                 @"^!sws[0-9]+((:?((:?\+)?|(:?\-)?)[0-9]+)?)$",
                 "Savage Worlds Statist",
                 "sws(zahl)(+/-zahl)",
@@ -53,7 +53,7 @@ namespace AllDice.Classes
                 "!sws8+1",
                 sws_Async)); //sws[zahl]+/-[zahl]
 
-            commands_def.Add(new CommandDef( //Savage Worlds Wildcard
+            commands_def.Add(new CommandDef( //Savage Worlds Damage
                 @"^!swd[0-9]+,[0-9]+(:?(,)?)((:?((:?\+)?|(:?\-)?)[0-9]+)?)$",
                 "Savage Worlds Damage",
                 "swd(zahl),(zahl),(+/-zahl)",
@@ -61,10 +61,10 @@ namespace AllDice.Classes
                 "!swd5,4,+1",
                 swd_Async)); //swd[zahl],[zahl],+/-[zahl]
 
-            commands_def.Add(new CommandDef( //Savage Worlds Wildcard
+            commands_def.Add(new CommandDef( //Savage Worlds Damage-Zone
                 @"^!swh$",
                 "Savage Worlds Damage-Zone",
-                "swd)",
+                "swh",
                 "Savage Worlds Damage-Zone Probe",
                 "!swh",
                 swh_Async)); //swh
