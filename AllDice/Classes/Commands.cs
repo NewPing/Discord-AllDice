@@ -582,7 +582,7 @@ namespace AllDice.Classes
                     {
                         foreach (CommandDef command in commands_def)
                         {
-                            reply += "**" + command.index + " - " + command.name + "**" + " : " + command.syntax + "\n\n";
+                            reply += "**" + command.index + " - " + command.name + "**" + "  " + command.syntax + "\n\n";
                         }
 
                         await ReplyManager.send_Async(message, "❓ - Hilfeseite : Mögliche Befehle - ❓", reply, false);
