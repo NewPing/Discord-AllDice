@@ -471,7 +471,7 @@ namespace AllDice.Classes
                         explodingDice0 = Helper.getExplodingDice(inputNumbers[0]);
                         explodingDice1 = Helper.getExplodingDice(inputNumbers[1]);
                         //Output zusammenbauen
-                        if (message.Content.Count(x => x == ',') == 2)
+                        if (message.Content.Count(x => x == ',') == 2 || message.Content.Contains("+") || message.Content.Contains("-"))
                         {
                             if (message.Content.Contains("-")) //nachricht enthält minus
                             {
