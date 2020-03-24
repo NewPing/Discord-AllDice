@@ -93,13 +93,13 @@ namespace AllDice.Classes
                 "!showDisabledChannels",
                 showDisabledChannels_Async));
 
-            commands_def.Add(new CommandDef( //Testcommand
-                @"^!test$",
-                "-",
-                "-",
-                "-",
-                "-",
-                test_Async));
+            //commands_def.Add(new CommandDef( //Testcommand
+            //    @"^!test$",
+            //    "-",
+            //    "-",
+            //    "-",
+            //    "-",
+            //    test_Async));
         }
 
         public async Task handleCommandInput(SocketUserMessage message)
@@ -120,7 +120,7 @@ namespace AllDice.Classes
                 if (Helper.isChannelEnabled(message.Channel.Id.ToString()))
                 {
                     await ReplyManager.send_Async(message, "Syntax Error", "Kein Befehl mit diesem Syntax gefunden...");
-                    await help_Async(message);
+                    await showAllCommands_Async(message);
                 }
             }
         }
@@ -598,13 +598,34 @@ namespace AllDice.Classes
                         {
                             await ReplyManager.send_Async(message, "❓ - Hilfeseite : NoCommand - ❓", "Es wurde kein Command mit dem angegebenen Index gefunden...\nBitte versuchen Sie es erneut!", false);
                         }
-                        
                     }
                 }
             }
             catch (Exception)
             {
                 await ReplyManager.send_Async(message, "Exception in help_Async... Versuche es bitte erneut mit anderen Inputs...");
+            }
+        }
+
+        private async Task showAllCommands_Async(SocketUserMessage message)
+        {
+            try
+            {
+                if (Helper.isChannelEnabled(message.Channel.Id.ToString()))
+                {
+                    string reply = "";
+
+                    foreach (CommandDef command in commands_def)
+                    {
+                        reply += "**" + command.index + " - " + command.name + "**" + " : " + command.syntax + "\n\n";
+                    }
+
+                    await ReplyManager.send_Async(message, "❓ - Hilfeseite : Mögliche Befehle - ❓", reply, false);
+                }
+            }
+            catch (Exception)
+            {
+                await ReplyManager.send_Async(message, "Exception in showAllCommands_Async... Versuche es bitte erneut mit anderen Inputs...");
             }
         }
 
