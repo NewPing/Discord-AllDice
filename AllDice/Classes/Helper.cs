@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AllDice.Classes
 {
@@ -12,6 +13,7 @@ namespace AllDice.Classes
         public static string ownerID;
         public static Random random = new Random();
         public static Dictionary<string, string> disabledChannels = new Dictionary<string, string>();
+        public static Dictionary<string, Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>> lastSendMsgsAndFuncs = new Dictionary<string, Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>>();
         public static int commandIndexCounter = 1;
         public static int swPass = 4;
 
@@ -72,6 +74,28 @@ namespace AllDice.Classes
             } else
             {
                 return "Erfolg - Steigerung um **" + (Convert.ToInt32(number / swPass) -1) + "**!";
+            }
+        }
+
+        public static void setLastSendMsgAndFunc(string userid, Tuple<Func<SocketUserMessage, Task>, SocketUserMessage> lastSendMsgAndFunc)
+        {
+            if (lastSendMsgsAndFuncs.ContainsKey(userid))
+            {
+                lastSendMsgsAndFuncs[userid] = lastSendMsgAndFunc;
+            } else
+            {
+                lastSendMsgsAndFuncs.Add(userid, lastSendMsgAndFunc);
+            }
+        }
+
+        public static Tuple<Func<SocketUserMessage, Task>, SocketUserMessage> getLastSendMsgAndFunc(string userid)
+        {
+            if (lastSendMsgsAndFuncs.ContainsKey(userid))
+            {
+                return lastSendMsgsAndFuncs[userid];
+            } else
+            {
+                throw new Exception();
             }
         }
 

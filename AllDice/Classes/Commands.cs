@@ -21,10 +21,18 @@ namespace AllDice.Classes
 
         private void initializeCommands()
         {
+            commands_def.Add(new CommandDef( //Letzen Befehl wiederholen
+                @"^!$",
+                "Rewind",
+                "!",
+                "Führt den zuletzt eingebenen Befehl erneut aus",
+                "!",
+                rewind_Async)); //help [command]
+
             commands_def.Add(new CommandDef( //Hilfeseite
                 @"^!help(:?((:?( )?)[0-9]+)?)$",
                 "Help",
-                "help (index)",
+                "!help (index)",
                 "Gibt die Hilfeseite aus",
                 "!help 1",
                 help_Async)); //help [command]
@@ -32,7 +40,7 @@ namespace AllDice.Classes
             commands_def.Add(new CommandDef( //Normaler Wurf
                 @"^!((?:[0-9])?)+w[0-9]+((:?((:?\+)?|(:?\-)?)[0-9]+)?)$",
                 "Probewurf",
-                "(zahl)w(zahl)(+/-zahl)",
+                "!(zahl)w(zahl)(+/-zahl)",
                 "Würfelt einen virtuellen Würfel mit der angegebenen Augenzahl",
                 "!2w6+1",
                 w_Async)); //[zahl]w[zahl]+/-[zahl]
@@ -40,7 +48,7 @@ namespace AllDice.Classes
             commands_def.Add(new CommandDef( //Savage Worlds Wildcard
                 @"^!sww[0-9]+((:?((:?\+)?|(:?\-)?)[0-9]+)?)$",
                 "Savage Worlds Wildcard",
-                "sww(zahl)(+/-zahl)",
+                "!sww(zahl)(+/-zahl)",
                 "Savage Worlds Wildcard-Eigenschaftsprobe",
                 "!sww8+1",
                 sww_Async)); //sww[zahl]+/-[zahl]
@@ -48,7 +56,7 @@ namespace AllDice.Classes
             commands_def.Add(new CommandDef( //Savage Worlds Statist
                 @"^!sws[0-9]+((:?((:?\+)?|(:?\-)?)[0-9]+)?)$",
                 "Savage Worlds Statist",
-                "sws(zahl)(+/-zahl)",
+                "!sws(zahl)(+/-zahl)",
                 "Savage Worlds Statist Probe",
                 "!sws8+1",
                 sws_Async)); //sws[zahl]+/-[zahl]
@@ -56,7 +64,7 @@ namespace AllDice.Classes
             commands_def.Add(new CommandDef( //Savage Worlds Damage
                 @"^!swd[0-9]+,[0-9]+(:?(,)?)((:?((:?\+)?|(:?\-)?)[0-9]+)?)$",
                 "Savage Worlds Damage",
-                "swd(zahl),(zahl),(+/-zahl)",
+                "!swd(zahl),(zahl),(+/-zahl)",
                 "Savage Worlds Damage Probe",
                 "!swd5,4,+1",
                 swd_Async)); //swd[zahl],[zahl],+/-[zahl]
@@ -64,7 +72,7 @@ namespace AllDice.Classes
             commands_def.Add(new CommandDef( //Savage Worlds Damage-Zone
                 @"^!swh$",
                 "Savage Worlds Damage-Zone",
-                "swh",
+                "!swh",
                 "Savage Worlds Damage-Zone Probe",
                 "!swh",
                 swh_Async)); //swh
@@ -72,7 +80,7 @@ namespace AllDice.Classes
             commands_def.Add(new CommandDef( //Channel aktivieren
                 @"^!enableChannel$",
                 "Channel aktivieren",
-                "enableChannel",
+                "!enableChannel",
                 "Aktivert einen deaktivierten Channel",
                 "!enableChannel",
                 enableChannel_Async));
@@ -80,7 +88,7 @@ namespace AllDice.Classes
             commands_def.Add(new CommandDef( //Channel deaktiveren
                 @"^!disableChannel$",
                 "Channel deaktieren",
-                "disableChannel",
+                "!disableChannel",
                 "Deakativert einen aktiven Channel (Nachrichten in diesem Channel werden dann vom Bot ignoriert)",
                 "!disableChannel",
                 disableChannel_Async));
@@ -88,7 +96,7 @@ namespace AllDice.Classes
             commands_def.Add(new CommandDef( //Deaktiverte Channel anzeigen
                 @"^!showDisabledChannels",
                 "Deaktivierte Channel anzeigen",
-                "showDisabledChannels",
+                "!showDisabledChannels",
                 "Listet alle deaktiverten Channels auf",
                 "!showDisabledChannels",
                 showDisabledChannels_Async));
@@ -169,7 +177,7 @@ namespace AllDice.Classes
                             reply = reply.Replace("$RESULT$", (sum).ToString());
 
                             await ReplyManager.send_Async(message, reply);
-
+                            Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(w_Async, message));
                         }
                         #endregion
                     }
@@ -202,6 +210,7 @@ namespace AllDice.Classes
                                 reply = reply.Replace("$RESULT$", (sum + inputNumbers[1]).ToString());
 
                                 await ReplyManager.send_Async(message, reply);
+                                Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(w_Async, message));
                             }
                             #endregion
                         }
@@ -235,6 +244,7 @@ namespace AllDice.Classes
                                 reply = reply.Replace("$RESULT$", (sum).ToString());
 
                                 await ReplyManager.send_Async(message, reply);
+                                Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(w_Async, message));
                             }
                             #endregion
                         }
@@ -275,6 +285,7 @@ namespace AllDice.Classes
                             reply = reply.Replace("$RESULT$", (sum + inputNumbers[2]).ToString());
 
                             await ReplyManager.send_Async(message, reply);
+                            Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(w_Async, message));
                         }
                         #endregion
                     }
@@ -360,6 +371,7 @@ namespace AllDice.Classes
                         }
 
                         await ReplyManager.send_Async(message, reply);
+                        Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(sww_Async, message));
                     }
                 }
             }
@@ -432,6 +444,7 @@ namespace AllDice.Classes
                         }
 
                         await ReplyManager.send_Async(message, reply);
+                        Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(sws_Async, message));
                     }
                 }
             }
@@ -504,6 +517,7 @@ namespace AllDice.Classes
                         reply = reply.Replace("$RESULT$", (explodingDice0.Item1 + explodingDice1.Item1 + inputNumbers[2]).ToString());
 
                         await ReplyManager.send_Async(message, reply);
+                        Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(swd_Async, message));
                     }
                 }
             }
@@ -544,7 +558,7 @@ namespace AllDice.Classes
                     reply = reply.Replace("$ZONE1$", zones[1]);
 
                     await ReplyManager.send_Async(message, reply);
-
+                    Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(swh_Async, message));
                 }
             }
             catch (Exception)
@@ -572,6 +586,7 @@ namespace AllDice.Classes
                         }
 
                         await ReplyManager.send_Async(message, "❓ - Hilfeseite : Mögliche Befehle - ❓", reply, false);
+                        Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(help_Async, message));
                     }
                     else //ausgabe hilfe für befehl (!help [zahl])
                     {
@@ -594,6 +609,7 @@ namespace AllDice.Classes
                         if (commandFound)
                         {
                             await ReplyManager.send_Async(message, "❓ - Hilfeseite : " + tmpCommandName + " - ❓", reply, false);
+                            Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(help_Async, message));
                         } else
                         {
                             await ReplyManager.send_Async(message, "❓ - Hilfeseite : NoCommand - ❓", "Es wurde kein Command mit dem angegebenen Index gefunden...\nBitte versuchen Sie es erneut!", false);
@@ -604,6 +620,23 @@ namespace AllDice.Classes
             catch (Exception)
             {
                 await ReplyManager.send_Async(message, "Exception in help_Async... Versuche es bitte erneut mit anderen Inputs...");
+            }
+        }
+
+        private async Task rewind_Async(SocketUserMessage message)
+        {
+            try
+            {
+                if (Helper.isChannelEnabled(message.Channel.Id.ToString()))
+                {
+                    Tuple<Func<SocketUserMessage, Task>, SocketUserMessage> commandAndFunc = Helper.getLastSendMsgAndFunc(message.Author.Id.ToString());
+
+                    await commandAndFunc.Item1(commandAndFunc.Item2);
+                }
+            }
+            catch (Exception)
+            {
+                await ReplyManager.send_Async(message, "Du hast bisher noch keine gültigen Befehle gesendet...");
             }
         }
 
@@ -639,6 +672,7 @@ namespace AllDice.Classes
                     reply += "- " + disbledChannel.Value + "\n";
                 }
                 await ReplyManager.send_Async(message, "Deaktivierte Channel", reply);
+                Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(showDisabledChannels_Async, message));
             }
             catch (Exception)
             {
@@ -661,6 +695,7 @@ namespace AllDice.Classes
                         Helper.disabledChannels.Add(message.Channel.Id.ToString(), message.Channel.Name);
                         await ReplyManager.send_Async(message, "", "Channel wurde deaktivert...");
                     }
+                    Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(disableChannel_Async, message));
                 } else
                 {
                     await ReplyManager.send_Async(message, "Unauthorized", "Sie verfügen leider nicht über die benötigten Berechtigungen...");
@@ -687,6 +722,7 @@ namespace AllDice.Classes
                     {
                         await ReplyManager.send_Async(message, "", "Channel wurde aktiv...");
                     }
+                    Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(enableChannel_Async, message));
                 }
                 else
                 {
