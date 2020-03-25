@@ -1,6 +1,7 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AllDice.Classes
@@ -51,7 +52,7 @@ namespace AllDice.Classes
         {
             if (!String.IsNullOrWhiteSpace(replyText))
             {
-                var splitString = Helper.splitIntoChunks(replyText, Helper.maxReplyLength);
+                var splitString = splitIntoChunks(replyText, Helper.maxReplyLength);
 
                 //send first block
                 Embed embed = null;
@@ -95,6 +96,16 @@ namespace AllDice.Classes
 
                 await message.Channel.SendMessageAsync("", false, embed);
             }
+        }
+
+        public static List<string> splitIntoChunks(string str, int maxChunkSize)
+        {
+            List<string> chunks = new List<string>();
+            for (int i = 0; i < str.Length; i += maxChunkSize)
+            {
+                chunks.Add(str.Substring(i, Math.Min(maxChunkSize, str.Length - i)));
+            }
+            return chunks;
         }
     }
 }

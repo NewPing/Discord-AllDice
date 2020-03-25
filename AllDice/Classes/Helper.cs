@@ -171,16 +171,6 @@ namespace AllDice.Classes
             }
         }
 
-        public static List<string> splitIntoChunks(string str, int maxChunkSize)
-        {
-            List<string> chunks = new List<string>();
-            for (int i = 0; i < str.Length; i += maxChunkSize)
-            {
-                chunks.Add(str.Substring(i, Math.Min(maxChunkSize, str.Length - i)));
-            }
-            return chunks;
-        }
-
         public static bool isChannelEnabled(string channelID)
         {
             return !Helper.disabledChannels.ContainsKey(channelID);
