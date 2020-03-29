@@ -46,6 +46,13 @@ namespace AllDice.Classes
             return result;
         }
 
+        public static int getRandomNumber(int startValue, int endValue)
+        {
+            int result = random.Next(startValue, endValue + 1);
+
+            return result;
+        }
+
         public static Tuple<int, string> getExplodingDice(int diceSides)
         {
             int resNumber = 0;
