@@ -112,23 +112,30 @@ namespace AllDice.Classes
 
         public async Task handleCommandInput(SocketUserMessage message)
         {
-            bool commandFound = false;
-            
-            foreach (CommandDef command in commands_def) //mögliche Commands durchlaufen
+            try
             {
-                if (command.matchPattern.IsMatch(message.Content.ToLower()))
+                bool commandFound = false;
+
+                foreach (CommandDef command in commands_def) //mögliche Commands durchlaufen
                 {
-                    commandFound = true;
-                    await command.function(message);
+                    if (command.matchPattern.IsMatch(message.Content.ToLower()))
+                    {
+                        commandFound = true;
+                        await command.function(message);
+                    }
                 }
-            }
-            
-            if (commandFound == false)
+
+                if (commandFound == false)
+                {
+                    if (Helper.isChannelEnabled(message.Channel.Id.ToString()))
+                    {
+                        await ReplyManager.send_Async(message, "Syntax Error", "Kein Befehl mit diesem Syntax gefunden...\nNutze !help um eine Liste an möglichen Befehlen zu erhalten.");
+                    }
+                }
+            } catch (Exception ex)
             {
-                if (Helper.isChannelEnabled(message.Channel.Id.ToString()))
-                {
-                    await ReplyManager.send_Async(message, "Syntax Error", "Kein Befehl mit diesem Syntax gefunden...\nNutze !help um eine Liste an möglichen Befehlen zu erhalten.");
-                }
+                Console.WriteLine(ex.ToString());
+                await ReplyManager.send_Async(message, "Critical Exception Occoured!", "");
             }
         }
         #endregion
