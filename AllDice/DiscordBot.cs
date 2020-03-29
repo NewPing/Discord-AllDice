@@ -72,9 +72,9 @@ namespace AllDice //https://discord.foxbot.me/stable/
             Console.WriteLine(arg);
             return Task.CompletedTask;
         }
-#endregion
+        #endregion
 
-        #region evenhandling
+        #region eventhandling
 
         public void RegisterCommandsAsync()
         {
@@ -96,6 +96,6 @@ namespace AllDice //https://discord.foxbot.me/stable/
             }
         }
 
-#endregion
+        #endregion
     }
 }
