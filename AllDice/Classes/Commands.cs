@@ -550,7 +550,7 @@ namespace AllDice.Classes
                     string[] zones = Helper.getSWHZoneOutput(randomNumbers[0] + randomNumbers[1], randomNumbers[2]);
                     if (String.IsNullOrWhiteSpace(zones[1]))
                     {
-                        blancOutput = blancOutput.Replace("\nZusatzwurf W6: $RANDOMNUMBER2$ - **$ZONE1$**", "");
+                        blancOutput = blancOutput.Replace("\nZusatzwurf W6: $RANDNUMBER2$ - **$ZONE1$**", "");
                     }
 
                     //Output zusammenbauen
