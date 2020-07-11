@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -50,7 +50,7 @@ namespace AllDice.Classes
         }
         public static string OutcomeHighName
         {
-            get => _outcomeHighName;
+            get => "♾️" + _outcomeHighName;
 
             set
             {
@@ -110,21 +110,21 @@ namespace AllDice.Classes
             switch (i)
             {
                 case 4:
-                    return "✅ Voller Erfolg";
+                    return "⏫ Voller Erfolg";
                 case 3:
-                    return "☑️ Erfolg";
+                    return "🔼 Erfolg";
                 case 2:
-                    return "☑️ Erfolg";
+                    return "🔼 Erfolg";
                 case 1:
-                    return "↔️ Gleichstand";
+                    return "⏸️ Gleichstand";
                 case 0:
-                    return "❎Fehlschlag oder Erfolg mit Haken";
+                    return "🔽 Fehlschlag oder Erfolg mit Haken";
             }
 
             if (i > 4)
                 return OutcomeHighName;
 
-            return "❌Fehlschlag";
+            return "⏬ Fehlschlag";
         }
 
         #endregion
@@ -211,7 +211,7 @@ namespace AllDice.Classes
                             output += "🔼";
                             break;
                         case 0:
-                            output += "0️⃣";
+                            output += "⏺️";
                             break;
                         case -1:
                             output += "🔽";
