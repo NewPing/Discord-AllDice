@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace AllDice.Classes
+namespace Discord_AllDice.Classes
 {
     public static class ReplyManager
     {
@@ -55,7 +55,7 @@ namespace AllDice.Classes
                 var splitString = splitIntoChunks(replyText, Helper.maxReplyLength);
 
                 //send first block
-                Embed embed = null;
+                Embed embed;
                 if (showAuthor)
                 {
                     embed = new EmbedBuilder()
@@ -64,7 +64,8 @@ namespace AllDice.Classes
                     .WithTitle(caption)
                     .WithDescription(splitString[0])
                     .Build();
-                } else
+                }
+                else
                 {
                     embed = new EmbedBuilder()
                     .WithColor(color)
@@ -85,7 +86,8 @@ namespace AllDice.Classes
 
                     await message.Channel.SendMessageAsync("", false, embed);
                 }
-            } else
+            }
+            else
             {
                 Embed embed = new EmbedBuilder()
                     .WithAuthor(message.Author)

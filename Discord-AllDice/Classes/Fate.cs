@@ -1,8 +1,9 @@
+﻿using Discord_AllDice.Classes;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace AllDice.Classes
+namespace Discord_AllDice.Classes
 {
     public class Fate
     {

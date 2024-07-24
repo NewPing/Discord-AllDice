@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AllDice.Classes
+namespace Discord_AllDice.Classes
 {
     public static class Helper
     {
         public static int maxReplyLength = 1000;
-        public static string ownerID;
+        public static string? ownerID;
         public static Random random = new Random();
         public static Dictionary<string, string> disabledChannels = new Dictionary<string, string>();
         public static Dictionary<string, Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>> lastSendMsgsAndFuncs = new Dictionary<string, Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>>();
@@ -66,7 +66,7 @@ namespace AllDice.Classes
                 resStr += tmpNumber + "+";
             } while (tmpNumber == diceSides);
 
-            resStr = resStr.Substring(0, resStr.Length -1);
+            resStr = resStr.Substring(0, resStr.Length - 1);
             return new Tuple<int, string>(resNumber, resStr);
         }
 
@@ -75,12 +75,14 @@ namespace AllDice.Classes
             if (number < swPass)
             {
                 return "Fehlschlag!";
-            } else if (number < swPass * 2)
+            }
+            else if (number < swPass * 2)
             {
                 return "Erfolg!";
-            } else
+            }
+            else
             {
-                return "Erfolg - Steigerung um **" + (Convert.ToInt32(number / swPass) -1) + "**!";
+                return "Erfolg - Steigerung um **" + (Convert.ToInt32(number / swPass) - 1) + "**!";
             }
         }
 
@@ -89,7 +91,8 @@ namespace AllDice.Classes
             if (lastSendMsgsAndFuncs.ContainsKey(userid))
             {
                 lastSendMsgsAndFuncs[userid] = lastSendMsgAndFunc;
-            } else
+            }
+            else
             {
                 lastSendMsgsAndFuncs.Add(userid, lastSendMsgAndFunc);
             }
@@ -100,7 +103,8 @@ namespace AllDice.Classes
             if (lastSendMsgsAndFuncs.ContainsKey(userid))
             {
                 return lastSendMsgsAndFuncs[userid];
-            } else
+            }
+            else
             {
                 throw new Exception();
             }
@@ -114,16 +118,19 @@ namespace AllDice.Classes
             if (number == 2)
             {
                 ret[0] = "Geschlechtsteile";
-            } else if (number < 5)
+            }
+            else if (number < 5)
             {
                 if (getRandomNumber(2) == 1)
                 {
                     ret[0] = "Linker Arm";
-                } else
+                }
+                else
                 {
                     ret[0] = "Rechter Arm";
                 }
-            } else if (number < 10)
+            }
+            else if (number < 10)
             {
                 ret[0] = "Eingeweide";
                 if (number2 < 3)
@@ -138,7 +145,8 @@ namespace AllDice.Classes
                 {
                     ret[1] = "Ruiniert";
                 }
-            } else if (number == 10)
+            }
+            else if (number == 10)
             {
                 if (getRandomNumber(2) == 1)
                 {
@@ -148,7 +156,8 @@ namespace AllDice.Classes
                 {
                     ret[0] = "Rechtes Bein";
                 }
-            } else
+            }
+            else
             {
                 ret[0] = "Kopf";
                 if (number2 < 3)
@@ -172,7 +181,8 @@ namespace AllDice.Classes
             if (getRandomNumber(2) == 1)
             {
                 return Color.Purple;
-            } else
+            }
+            else
             {
                 return Color.Green;
             }

@@ -1,11 +1,12 @@
 ﻿using Discord.WebSocket;
+using Discord_AllDice.Classes;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace AllDice.Classes
+namespace Discord_AllDice.Classes
 {
     public class CommandDef
     {

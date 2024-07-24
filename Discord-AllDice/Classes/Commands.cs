@@ -1,12 +1,13 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using Discord_AllDice.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace AllDice.Classes
+namespace Discord_AllDice.Classes
 {
     public class Commands
     {
@@ -132,7 +133,8 @@ namespace AllDice.Classes
                         await ReplyManager.send_Async(message, "Syntax Error", "Kein Befehl mit diesem Syntax gefunden...\nNutze !help um eine Liste an möglichen Befehlen zu erhalten.");
                     }
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 await ReplyManager.send_Async(message, "Critical Exception Occoured!", "");
@@ -149,8 +151,8 @@ namespace AllDice.Classes
                 if (Helper.isChannelEnabled(message.Channel.Id.ToString()))
                 {
                     string blancOutput = Helper.blanc_w_Output;
-                    int[] inputNumbers = null;
-                    int[] randNumbers = null;
+                    int[] inputNumbers;
+                    int[] randNumbers;
                     string reply = "";
                     int sum = 0;
 
@@ -310,9 +312,9 @@ namespace AllDice.Classes
                 if (Helper.isChannelEnabled(message.Channel.Id.ToString()))
                 {
                     string blancOutput = Helper.blanc_sww_Output;
-                    int[] inputNumbers = null;
-                    Tuple<int, string> explodingDice0 = null;
-                    Tuple<int, string> explodingDice1 = null;
+                    int[] inputNumbers;
+                    Tuple<int, string> explodingDice0;
+                    Tuple<int, string> explodingDice1;
                     string reply = "";
 
                     MatchCollection values = new Regex(@"\d+").Matches(message.Content);
@@ -370,7 +372,8 @@ namespace AllDice.Classes
                         {
                             reply = reply.Replace("$OUTPUT0$", "Kritischer Fehlschlag!");
                             reply = reply.Replace("$OUTPUT1$", "Kritischer Fehlschlag!");
-                        } else
+                        }
+                        else
                         {
                             reply = reply.Replace("$OUTPUT0$", Helper.getSWResultOutput(explodingDice0.Item1 + inputNumbers[1]));
                             reply = reply.Replace("$OUTPUT1$", Helper.getSWResultOutput(explodingDice1.Item1 + inputNumbers[1]));
@@ -394,8 +397,8 @@ namespace AllDice.Classes
                 if (Helper.isChannelEnabled(message.Channel.Id.ToString()))
                 {
                     string blancOutput = Helper.blanc_sws_Output;
-                    int[] inputNumbers = null;
-                    Tuple<int, string> explodingDice0 = null;
+                    int[] inputNumbers;
+                    Tuple<int, string> explodingDice0;
                     string reply = "";
 
                     MatchCollection values = new Regex(@"\d+").Matches(message.Content);
@@ -467,9 +470,9 @@ namespace AllDice.Classes
                 if (Helper.isChannelEnabled(message.Channel.Id.ToString()))
                 {
                     string blancOutput = Helper.blanc_swd_Output;
-                    int[] inputNumbers = null;
-                    Tuple<int, string> explodingDice0 = null;
-                    Tuple<int, string> explodingDice1 = null;
+                    int[] inputNumbers;
+                    Tuple<int, string> explodingDice0;
+                    Tuple<int, string> explodingDice1;
                     string reply = "";
 
                     MatchCollection values = new Regex(@"\d+").Matches(message.Content);
@@ -616,7 +619,8 @@ namespace AllDice.Classes
                         {
                             await ReplyManager.send_Async(message, "❓ - Hilfeseite : " + tmpCommandName + " - ❓", reply, false);
                             Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(help_Async, message));
-                        } else
+                        }
+                        else
                         {
                             await ReplyManager.send_Async(message, "❓ - Hilfeseite : NoCommand - ❓", "Es wurde kein Command mit dem angegebenen Index gefunden...\nBitte versuchen Sie es erneut!", false);
                         }
@@ -666,7 +670,7 @@ namespace AllDice.Classes
 
         private async Task disableChannel_Async(SocketUserMessage message)
         {
-            try 
+            try
             {
                 if (Helper.isUserPermitted(message.Author.Id.ToString()))
                 {
@@ -680,7 +684,8 @@ namespace AllDice.Classes
                         await ReplyManager.send_Async(message, "", "Channel wurde deaktivert...");
                     }
                     Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(disableChannel_Async, message));
-                } else
+                }
+                else
                 {
                     await ReplyManager.send_Async(message, "Unauthorized", "Sie verfügen leider nicht über die benötigten Berechtigungen...");
                 }
@@ -693,7 +698,7 @@ namespace AllDice.Classes
 
         private async Task enableChannel_Async(SocketUserMessage message)
         {
-            try 
+            try
             {
                 if (Helper.isUserPermitted(message.Author.Id.ToString()))
                 {
