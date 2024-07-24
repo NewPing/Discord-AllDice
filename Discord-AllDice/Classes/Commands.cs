@@ -77,13 +77,13 @@ namespace Discord_AllDice.Classes
                 "!swh",
                 swh_Async)); //swh
 
-            commands_def.Add(new CommandDef( //Testcommand
-                @"^!test$",
-                "-",
-                "-",
-                "-",
-                "-",
-                test_Async));
+            //commands_def.Add(new CommandDef( //Testcommand
+            //    @"^!test$",
+            //    "-",
+            //    "-",
+            //    "-",
+            //    "-",
+            //    test_Async));
         }
 
         public async Task handleCommandInput(SocketUserMessage message)
@@ -601,25 +601,25 @@ namespace Discord_AllDice.Classes
             }
         }
 
-        private async Task test_Async(SocketUserMessage message)
-        {
-            try
-            {
-                Embed embd = new EmbedBuilder()
-                    .WithAuthor(message.Author)
-                    .WithColor(Color.Blue)
-                    .WithImageUrl("https://vignette.wikia.nocookie.net/gods-school/images/0/07/ErisProfile.png/revision/latest?cb=20190703212021")
-                    .WithTitle("würfelte einen w3+3")
-                    .WithDescription("Ergebnis: w3 + 3(2)\nSumme: (2 + 3) = 5")
-                    .Build();
+        //private async Task test_Async(SocketUserMessage message)
+        //{
+        //    try
+        //    {
+        //        Embed embd = new EmbedBuilder()
+        //            .WithAuthor(message.Author)
+        //            .WithColor(Color.Blue)
+        //            .WithImageUrl("https://vignette.wikia.nocookie.net/gods-school/images/0/07/ErisProfile.png/revision/latest?cb=20190703212021")
+        //            .WithTitle("würfelte einen w3+3")
+        //            .WithDescription("Ergebnis: w3 + 3(2)\nSumme: (2 + 3) = 5")
+        //            .Build();
 
-                await message.Channel.SendMessageAsync("", false, embd);
-            }
-            catch (Exception)
-            {
-                await ReplyManager.send_Async(message, "Exception in test_Async... Versuche es bitte erneut mit anderen Inputs...");
-            }
-        }
+        //        await message.Channel.SendMessageAsync("", false, embd);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        await ReplyManager.send_Async(message, "Exception in test_Async... Versuche es bitte erneut mit anderen Inputs...");
+        //    }
+        //}
 
         #endregion
         #endregion
