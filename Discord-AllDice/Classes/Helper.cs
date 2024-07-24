@@ -10,7 +10,6 @@ namespace Discord_AllDice.Classes
     public static class Helper
     {
         public static int maxReplyLength = 1000;
-        public static string? ownerID;
         public static Random random = new Random();
         public static Dictionary<string, string> disabledChannels = new Dictionary<string, string>();
         public static Dictionary<string, Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>> lastSendMsgsAndFuncs = new Dictionary<string, Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>>();
@@ -186,16 +185,6 @@ namespace Discord_AllDice.Classes
             {
                 return Color.Green;
             }
-        }
-
-        public static bool isChannelEnabled(string channelID)
-        {
-            return !Helper.disabledChannels.ContainsKey(channelID);
-        }
-
-        public static bool isUserPermitted(string userID)
-        {
-            return ownerID == userID;
         }
         #endregion
     }

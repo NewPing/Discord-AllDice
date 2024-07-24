@@ -7,40 +7,22 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using Discord_AllDice.Classes;
+using System.Windows.Input;
 
 namespace Discord_AllDice //https://discord.foxbot.me/stable/
 {
     public class DiscordBot
     {
-        private DiscordSocketClient _client = new DiscordSocketClient();
-        private IServiceProvider? _services;
-        private Commands? _commands;
-
-        #region setup
-        public async Task RunBotAsync()
-        {
-            string ownerID = "";
-            try
-            {
-#if DEBUG
-                ownerID = File.ReadAllText(Path.GetFullPath(@"..\..\..\") + "DiscordBotOwnerID.txt");
-#else
-                ownerID = File.ReadAllText("DiscordBotOwnerID.txt");
-#endif
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Fatal Error: Missing File: DiscordBotOwnerID.txt\n\n" + ex.ToString());
-                return;
-            }
-
-            _commands = new Commands(ownerID);
-
-            _services = new ServiceCollection()
+        private static DiscordSocketClient _client = new DiscordSocketClient();
+        private static Commands _commands = new Commands();
+        private static IServiceProvider _services = new ServiceCollection()
                 .AddSingleton(_client)
                 .AddSingleton(_commands)
                 .BuildServiceProvider();
 
+        #region setup
+        public async Task RunBotAsync()
+        {
             string token = "";
             try
             {
@@ -52,7 +34,7 @@ namespace Discord_AllDice //https://discord.foxbot.me/stable/
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Fatal Erro: Missing File: DiscordToken\n\n" + ex.ToString());
+                Console.WriteLine("Fatal Error: Missing File: DiscordToken\n\n" + ex.ToString());
                 return;
             }
 
