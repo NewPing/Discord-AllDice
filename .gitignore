@@ -343,10 +343,7 @@ ASALocalRun/
 healthchecksdb
 
 #DiscordToken
-DiscordToken
+Discord-Bot-Token.txt
 
 #discordCompile for arm
 discordbot-linux-arm/
-
-#DiscordBotOwnerID
-DiscordBotOwnerID

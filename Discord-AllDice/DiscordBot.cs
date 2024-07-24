@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Discord_AllDice.Classes;
 using System.Windows.Input;
 
-namespace Discord_AllDice //https://discord.foxbot.me/stable/
+namespace Discord_AllDice //https://docs.discordnet.dev/
 {
     public class DiscordBot
     {
@@ -27,14 +27,14 @@ namespace Discord_AllDice //https://discord.foxbot.me/stable/
             try
             {
 #if DEBUG
-                token = File.ReadAllText(Path.GetFullPath(@"..\..\..\") + "DiscordToken");
+                token = File.ReadAllText(Path.GetFullPath(@"..\..\..\") + "Discord-Bot-Token.txt");
 #else
-                    token = File.ReadAllText("DiscordToken");
+                token = File.ReadAllText("Discord-Bot-Token.txt");
 #endif
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Fatal Error: Missing File: DiscordToken\n\n" + ex.ToString());
+                Console.WriteLine("Fatal Error: Missing File: Discord-Bot-Token.txt\n\n" + ex.ToString());
                 return;
             }
 
