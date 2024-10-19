@@ -7,6 +7,7 @@ Ist ein Discord-Bot der das W체rfeln im Chat durch eingabe von Textbefehlen erm�
 | Rewind | ! | F체hrt den zuletzt eingebenen Befehl erneut aus |
 | Help | !help (index) | Gibt die Hilfeseite aus |
 | Probewurf | !(zahl)w(zahl)(+/-zahl) | W체rfelt einen virtuellen W체rfel mit der angegebenen Augenzahl |
+| Fate | !f(+/-zahl) | W체rfelt einen Fate Wurf mit 4 Fate-W체rfeln und einem optionalen Modifikator |
 | Savage Worlds Wildcard | !sww(zahl)(+/-zahl) | Savage Worlds Wildcard-Eigenschaftsprobe |
 | Savage Worlds Statist | !sws(zahl)(+/-zahl) | Savage Worlds Statist Probe |
 | Savage Worlds Damage | !swd(zahl),(zahl),(+/-zahl) | Savage Worlds Damage Probe |
