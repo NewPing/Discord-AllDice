@@ -13,16 +13,25 @@ namespace Discord_AllDice //https://docs.discordnet.dev/
 {
     public class DiscordBot
     {
-        private static DiscordSocketClient _client = new DiscordSocketClient();
-        private static Commands _commands = new Commands();
-        private static IServiceProvider _services = new ServiceCollection()
-                .AddSingleton(_client)
-                .AddSingleton(_commands)
-                .BuildServiceProvider();
+        private static DiscordSocketClient? _client;
+        private static Commands? _commands;
+        private static IServiceProvider? _services;
 
         #region setup
         public async Task RunBotAsync()
         {
+            var discordSocketConfig = new DiscordSocketConfig();
+            discordSocketConfig.GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent;
+            _client = new DiscordSocketClient(discordSocketConfig);
+
+            _commands = new Commands();
+
+            _services = new ServiceCollection()
+                .AddSingleton(_client)
+                .AddSingleton(_commands)
+                .BuildServiceProvider();
+
+
             string token = "";
             try
             {
