@@ -1,11 +1,5 @@
-﻿using Discord;
-using Discord.WebSocket;
-using Discord_AllDice.Classes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Discord.WebSocket;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Discord_AllDice.Classes
 {
@@ -44,6 +38,14 @@ namespace Discord_AllDice.Classes
                 "Würfelt einen virtuellen Würfel mit der angegebenen Augenzahl",
                 "!2w6+1",
                 w_Async)); //[zahl]w[zahl]+/-[zahl]
+
+            commands_def.Add(new CommandDef( //Fate Wurf
+                @"^!f((:?((:?\+)?|(:?\-)?)[0-9]+)?)$",
+                "Fate Wurf",
+                "!f(+/-zahl)",
+                "Würfelt einen Fate Wurf mit 4 Fate-Würfeln und einem optionalen Modifikator.",
+                "!f+2",
+                fate_Async)); //f[+/-zahl]
 
             commands_def.Add(new CommandDef( //Savage Worlds Wildcard
                 @"^!sww[0-9]+((:?((:?\+)?|(:?\-)?)[0-9]+)?)$",
@@ -271,6 +273,51 @@ namespace Discord_AllDice.Classes
             catch (Exception)
             {
                 await ReplyManager.send_Async(message, "Exception in w_Async... Versuche es bitte erneut mit anderen Inputs...");
+            }
+        }
+
+        private async Task fate_Async(SocketUserMessage message)
+        {
+            try
+            {
+                string fateOutput = Helper.blanc_fate_Output;
+                int modifier = 0;
+                int[] diceResults = new int[4];
+                string reply = "";
+
+                // Überprüfe, ob ein Modifikator im Nachrichteninhalt enthalten ist
+                MatchCollection values = new Regex(@"-?\d+").Matches(message.Content);
+                if (values.Count > 0)
+                {
+                    modifier = Int32.Parse(values[0].ToString());
+                }
+
+                // Würfel werfen
+                Random rand = new Random();
+                for (int i = 0; i < 4; i++)
+                {
+                    diceResults[i] = rand.Next(-1, 2); // Gibt -1, 0 oder +1 zurück
+                }
+
+                // Gesamtwürfelergebnis berechnen
+                int sum = diceResults.Sum();
+                int result = sum + modifier;
+
+                // Output zusammenbauen
+                reply = fateOutput;
+                reply = reply.Replace("$DICE1$", diceResults[0].ToString());
+                reply = reply.Replace("$DICE2$", diceResults[1].ToString());
+                reply = reply.Replace("$DICE3$", diceResults[2].ToString());
+                reply = reply.Replace("$DICE4$", diceResults[3].ToString());
+                reply = reply.Replace("$MODIFIER$", modifier.ToString());
+                reply = reply.Replace("$RESULT$", result.ToString());
+
+                await ReplyManager.send_Async(message, reply);
+                Helper.setLastSendMsgAndFunc(message.Author.Id.ToString(), new Tuple<Func<SocketUserMessage, Task>, SocketUserMessage>(fate_Async, message));
+            }
+            catch (Exception)
+            {
+                await ReplyManager.send_Async(message, "Exception in fate_Async... Versuche es bitte erneut mit anderen Inputs...");
             }
         }
 

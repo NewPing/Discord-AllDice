@@ -19,6 +19,8 @@ namespace Discord_AllDice.Classes
         #region blanc_outputs
         public static string blanc_w_Output =
             "Rechnung: $RANDNUMBER$\nSumme: $SUM$+$ADD$\nErgebnis = $RESULT$";
+        public static string blanc_fate_Output =
+            "Fate: $DICE1$, $DICE2$, $DICE3$, $DICE4$\nModifikator: $MODIFIER$\nSumme: ($DICE1$ + $DICE2$ + $DICE3$ + $DICE4$) + $MODIFIER$\nErgebnis = $RESULT$";
         public static string blanc_sww_Output =
             "**Probewurf W$INPUTNUMBER$**\nRechnung: $RANDNUMBERS0$\nSumme: $SUM0$+$ADD$ = $RESULT0$\n$OUTPUT0$\n\n" +
             "**Wildcardwurf: W6**\nRechnung: $RANDNUMBERS1$\nSumme: $SUM1$+$ADD$ = $RESULT1$\n$OUTPUT1$";
