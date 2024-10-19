@@ -625,4 +625,3 @@ namespace Discord_AllDice.Classes
         #endregion
     }
 }
-.

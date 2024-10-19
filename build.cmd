@@ -1,5 +1,5 @@
-del /f /q /s discordbot-linux-arm > nul
-rmdir /q /s discordbot-linux-arm
-dotnet publish --configuration Release --output discordbot-linux-arm --framework netcoreapp3.1 --self-contained true --runtime ubuntu.18.04-arm64
+del /f /q /s discordbot-linux-x64 > nul
+rmdir /q /s discordbot-linux-x64
+dotnet publish --configuration Release --output discordbot-linux --framework net8.0 --self-contained true --runtime linux-x64
 ::copy News_TestBot\DiscordToken discordbot-linux-arm\
 pause
